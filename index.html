@@ -1,0 +1,71 @@
+<charset="UTF-8">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch API Sample</title>
+</head>
+<body>
+    <div style="padding: 20px;">
+        <h1>Fetch API Sample</h1>
+        <p>F12で結果を確認する</p>
+
+        <p>mode</p>
+        <select id="mode" name="mode">
+            <option value="">（空文字列）</option>
+            <option value="hackathon">hackathon</option>
+            <option value="search">search</option>
+            <option value="exchange">exchange</option>
+            <option value="all">all</option>
+            <option value="input">入力する→</option>
+        </select>
+        <input type="text" id="mode_input" name="mode_input">
+
+        <p>word</p>
+        <select id="word" name="word">
+            <option value="">（空文字列）</option>
+            <option value="76C10">76C10</option>
+            <option value="202404030708">202404031711</option>
+            <option value="12345678901234">12345678901234</option>
+            <option value="123456789012">123456789012</option>
+            <option value="input">入力する→</option>
+        </select>
+        <input type="text" id="word_input" name="word_input">
+
+        <button id="fetch" onclick="fetchData()" style="background-color: #B00000; color: #fff; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Fetch</button>
+    </div>
+
+    <script>
+        //ここから
+        function fetchData() {
+            console.log('fetchを開始します');
+
+            let mode = document.getElementById('mode').value;
+            let word = document.getElementById('word').value;
+            if (mode === 'input') {
+                mode = document.getElementById('mode_input').value;
+            }
+            if (word === 'input') {
+                word = document.getElementById('word_input').value;
+            }
+
+            fetch(`https://kurisyushien.org/api?mode=${mode}&word=${word}`, {
+                mode: 'cors',
+                redirect: 'follow'
+            })
+                .then(async response => {
+                    const text = await response.text();
+                    return JSON.parse(text);
+                })
+                .then(data => {
+                    console.log(data);
+                    console.log(data.data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        //ここまでコピペするといいよ
+    </script>
+</body>
+</html>
+
